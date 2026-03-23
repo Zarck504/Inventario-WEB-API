@@ -1,4 +1,6 @@
 import express from 'express';
+import dotenv from 'dotenv';
+dotenv.config();
 import mongoose from 'mongoose';
 import cors from 'cors';
 import productoRoutes from './routes/Producto.route.js';
@@ -11,9 +13,9 @@ import swaggerUi from 'swagger-ui-express';
 
 // Configuración
 const config = {
-  PORT: 5000,
-  MONGODB_URI: 'mongodb://localhost:27017/api4',
-  JWT_SECRET: 'tu_clave_secreta_muy_segura_aqui',
+  PORT: process.env.PORT || 5000,
+  MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/api4',
+  JWT_SECRET: process.env.JWT_SECRET || 'tu_clave_secreta_muy_segura_aqui',
   JWT_EXPIRES_IN: '1h'
 };
 
@@ -74,4 +76,5 @@ app.listen(PORT, () => {
   console.log('\n� Para detener el servidor, presiona: Ctrl + C');
   console.log('\n✅ Listo para recibir peticiones...\n');
 });
+export default app;
 export { config };

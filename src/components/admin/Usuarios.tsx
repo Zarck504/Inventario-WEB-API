@@ -3,6 +3,8 @@ import { Table, Button, Modal, Form, Alert, Spinner } from 'react-bootstrap';
 import { FaEdit, FaTrash, FaPlus, FaSave, FaTimes } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL || '/api';
+
 interface Usuario {
   _id: string;
   nombre: string;
@@ -22,7 +24,7 @@ const Usuarios = () => {
 
   const fetchUsuarios = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/usuarios', {
+      const response = await fetch(`${API_URL}/usuarios`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json'
@@ -52,8 +54,8 @@ const Usuarios = () => {
 
     try {
       const url = currentUsuario._id 
-        ? `http://localhost:5000/api/usuarios/${currentUsuario._id}`
-        : 'http://localhost:5000/api/usuarios/registro';
+        ? `${API_URL}/usuarios/${currentUsuario._id}`
+        : `${API_URL}/usuarios/registro`;
       
       const method = currentUsuario._id ? 'PUT' : 'POST';
       
@@ -85,7 +87,7 @@ const Usuarios = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5000/api/usuarios/${id}`, {
+      const response = await fetch(`${API_URL}/usuarios/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
