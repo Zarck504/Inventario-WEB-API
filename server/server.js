@@ -51,13 +51,13 @@ try {
 }
 
 // Conexión a MongoDB
-console.log('🚀 Iniciando conexión a MongoDB...');
+// Imprimimos los primeros 15 caracteres para saber a dónde se está intentando conectar:
+console.log(`🚀 Iniciando conexión a MongoDB... URI detectada: ${config.MONGODB_URI.substring(0, 18)}...`);
 mongoose.connect(config.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+  serverSelectionTimeoutMS: 5000 // Forzamos un timeout más rápido (5s) para errores de red
 })
-  .then(() => console.log('✅ Conectado exitosamente a MongoDB'))
-  .catch(err => console.error('Error al conectar a MongoDB:', err));
+  .then(() => console.log('✅ Conectado exitosamente a MongoDB Atlas'))
+  .catch(err => console.error('❌ Error crítico al conectar a MongoDB:', err.message));
 
 // Rutas (Rutas normales)
 app.use('/api/productos', productoRoutes);
