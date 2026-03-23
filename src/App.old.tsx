@@ -16,7 +16,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Swal from 'sweetalert2';
 import { FaPlus, FaTrash, FaEdit, FaBars } from 'react-icons/fa';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 interface Producto {
   _id: string;

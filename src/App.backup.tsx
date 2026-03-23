@@ -18,7 +18,7 @@ import { FaPlus, FaTrash, FaEdit, FaBars, FaSignOutAlt } from 'react-icons/fa';
 import { useAuth } from './contexts/AuthContext';
 import AdminUsers from './pages/AdminUsers';
 
-const API_BASE = 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 interface Producto {
   _id: string;
