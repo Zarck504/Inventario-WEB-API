@@ -9,7 +9,6 @@ import authRoutes from './routes/Auth.route.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { mkdirSync, readFileSync } from 'fs';
-import swaggerUi from 'swagger-ui-express';
 
 // Configuración
 const config = {
@@ -41,8 +40,12 @@ app.use('/uploads', express.static(uploadPath));
 try {
   const swaggerPath = path.join(__dirname, 'swagger-output.json');
   const swaggerDocument = JSON.parse(readFileSync(swaggerPath, 'utf8'));
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-  console.log('✅ Documentación Swagger configurada correctamente');
+  import('swagger-ui-express').then(swaggerUi => {
+    app.use('/api-docs', swaggerUi.default.serve, swaggerUi.default.setup(swaggerDocument));
+    console.log('✅ Documentación Swagger configurada correctamente');
+  }).catch(e => {
+    console.log('ℹ️ swagger-ui-express no está instalado (normal en serverless).');
+  });
 } catch (err) {
   console.log('ℹ️  swagger-output.json no encontrado aún. Genera la documentación con: npm run swagger');
 }
