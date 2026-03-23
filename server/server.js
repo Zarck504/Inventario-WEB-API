@@ -29,8 +29,12 @@ app.use(express.json());
 // Servir archivos subidos (imágenes)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const uploadPath = path.join(__dirname, 'uploads');
-mkdirSync(uploadPath, { recursive: true });
+const uploadPath = process.env.VERCEL ? '/tmp/uploads' : path.join(__dirname, 'uploads');
+try {
+  mkdirSync(uploadPath, { recursive: true });
+} catch (error) {
+  console.warn('No se pudo crear directorio uploads:', error.message);
+}
 app.use('/uploads', express.static(uploadPath));
 
 // Swagger UI (si el archivo swagger-output.json existe)
@@ -63,8 +67,9 @@ app.get('/api', (req, res) => {
 });
 
 // Iniciar el servidor
-app.listen(PORT, () => {
-  console.log(`\n✨ Servidor corriendo en: http://localhost:${PORT}`);
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`\n✨ Servidor corriendo en: http://localhost:${PORT}`);
   console.log('📚 Documentación de la API:');
   console.log(`   - Swagger UI:  http://localhost:${PORT}/api-docs`);
   console.log('\n🔍 Endpoints disponibles:');
@@ -75,6 +80,7 @@ app.listen(PORT, () => {
   console.log(`   - DELETE  http://localhost:${PORT}/api/productos/:id`);
   console.log('\n� Para detener el servidor, presiona: Ctrl + C');
   console.log('\n✅ Listo para recibir peticiones...\n');
-});
+  });
+}
 export default app;
 export { config };
