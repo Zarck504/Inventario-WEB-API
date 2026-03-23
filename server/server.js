@@ -56,10 +56,15 @@ mongoose.connect(config.MONGODB_URI, {
   .then(() => console.log('✅ Conectado exitosamente a MongoDB'))
   .catch(err => console.error('Error al conectar a MongoDB:', err));
 
-// Rutas
+// Rutas (Rutas normales)
 app.use('/api/productos', productoRoutes);
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/auth', authRoutes);
+
+// Rutas (Para Vercel Serverless, a veces omite el /api inicial según la configuración)
+app.use('/productos', productoRoutes);
+app.use('/usuarios', usuarioRoutes);
+app.use('/auth', authRoutes);
 
 // Ruta de prueba
 app.get('/api', (req, res) => {
